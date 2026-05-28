@@ -27,6 +27,7 @@ pyinstaller ^
     --hidden-import=PIL._tkinter_finder ^
     --hidden-import=transformers.models.clip ^
     --hidden-import=huggingface_hub ^
+    --hidden-import=openai ^
     image_classifier.py
 
 echo.
