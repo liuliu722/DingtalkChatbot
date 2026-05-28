@@ -96,9 +96,12 @@ class CLIPExtractor:
                 img = Image.open(p)
                 img.load()          # 强制读取像素数据，提前暴露损坏
                 img = img.convert("RGB")
-                inputs = self._proc(images=img, return_tensors="pt").to(self.device)
+                pixel_values = self._proc(
+                    images=img, return_tensors="pt")["pixel_values"].to(self.device)
                 with torch.no_grad():
-                    vec = self._model.get_image_features(**inputs)
+                    # 直接调用 vision_model 避免 transformers 版本间返回类型差异
+                    vision_out = self._model.vision_model(pixel_values=pixel_values)
+                    vec = self._model.visual_projection(vision_out.pooler_output)
                 feats.append(vec.cpu().numpy().ravel())
                 valid.append(p)
             except Exception as exc:
