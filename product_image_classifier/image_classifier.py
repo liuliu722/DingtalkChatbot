@@ -71,6 +71,7 @@ class CLIPExtractor:
         paths: List[str],
         on_status: Optional[Callable[[str], None]] = None,
         on_progress: Optional[Callable[[float], None]] = None,
+        on_log: Optional[Callable[[str], None]] = None,
     ) -> Tuple[np.ndarray, List[str]]:
         """
         提取特征向量。
@@ -79,6 +80,7 @@ class CLIPExtractor:
         feats: List[np.ndarray] = []
         valid: List[str] = []
         total = len(paths)
+        first_errors: List[str] = []  # 收集前 3 条错误显示到 GUI
 
         for idx, p in enumerate(paths):
             if on_status:
@@ -87,14 +89,25 @@ class CLIPExtractor:
                 on_progress((idx + 1) / total * 40.0)
 
             try:
-                img = Image.open(p).convert("RGB")
+                # 先尝试正常打开；微信等来源图片可能扩展名与实际格式不符，
+                # 用 LOAD_TRUNCATED_IMAGES 兼容截断文件
+                from PIL import ImageFile
+                ImageFile.LOAD_TRUNCATED_IMAGES = True
+                img = Image.open(p)
+                img.load()          # 强制读取像素数据，提前暴露损坏
+                img = img.convert("RGB")
                 inputs = self._proc(images=img, return_tensors="pt").to(self.device)
                 with torch.no_grad():
                     vec = self._model.get_image_features(**inputs)
                 feats.append(vec.cpu().numpy().ravel())
                 valid.append(p)
             except Exception as exc:
-                print(f"[SKIP] 无法处理图片：{p}\n       原因：{exc}", flush=True)
+                err_msg = f"[SKIP] {Path(p).name}：{exc}"
+                print(err_msg, flush=True)
+                if len(first_errors) < 3:
+                    first_errors.append(err_msg)
+                    if on_log:
+                        on_log(err_msg)
 
         if not feats:
             return np.empty((0,)), valid
@@ -482,11 +495,12 @@ class App:
             # ④ 提取图片特征（进度 0→40%）
             self._log("提取图片视觉特征…")
             feats, valid_paths = self.extractor.extract(
-                paths, on_status=self._set_status, on_progress=self._set_progress)
+                paths, on_status=self._set_status,
+                on_progress=self._set_progress, on_log=self._log)
 
             skipped = len(paths) - len(valid_paths)
             if skipped:
-                self._log(f"⚠  跳过损坏 / 无法读取图片 {skipped} 张（详见控制台）")
+                self._log(f"⚠  跳过损坏 / 无法读取图片 {skipped} 张")
             self._log(f"特征提取完成：有效 {len(valid_paths)} 张")
 
             if not valid_paths:
