@@ -1,0 +1,297 @@
+<title>恩平出发·闽粤浙一圈</title>
+<meta name="description" content="恩平→义乌→福州→泉州→厦门→澄海→恩平 的朋友圈九宫格">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@400;500;700&family=Ma+Shan+Zheng&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#efeae2; --paper:#ffffff; --ink:#1c1a17; --ink-2:#5b5650; --ink-3:#9a948c; --line:#e3ddd3;
+  --accent:#c8412b; --chip:#f3efe8; --link:#576b95;
+  --serif:"Noto Serif SC","Songti SC","SimSun",serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --brush:"Ma Shan Zheng","Noto Serif SC","KaiTi",serif;
+  --mono:"IBM Plex Mono","SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15151a; --paper:#1f1f26; --ink:#f1ede6; --ink-2:#b9b3aa; --ink-3:#7e786f; --line:#2e2e37; --chip:#2a2a33; --link:#7d92c4;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15151a; --paper:#1f1f26; --ink:#f1ede6; --ink-2:#b9b3aa; --ink-3:#7e786f; --line:#2e2e37; --chip:#2a2a33; --link:#7d92c4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:36px 20px 80px;display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:40px;align-items:start}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}}
+
+/* ---------- phone / moments post ---------- */
+.phone{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:18px 16px 22px;box-shadow:0 20px 50px -30px rgba(0,0,0,.35)}
+.post{display:grid;grid-template-columns:44px 1fr;gap:12px}
+.avatar{width:44px;height:44px;border-radius:8px;background:#1d2c4c;color:#fff;font:700 15px/44px var(--serif);text-align:center;letter-spacing:.05em}
+.name{color:var(--link);font-weight:700;font-size:15px}
+.copy{white-space:pre-wrap;font-size:15px;margin:4px 0 10px;color:var(--ink)}
+.grid{display:grid;gap:5px;grid-template-columns:repeat(3,1fr)}
+.grid[data-cols="2"]{grid-template-columns:repeat(2,1fr)}
+.grid[data-cols="1"]{grid-template-columns:1fr}
+.tile{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:3px;background:#222;cursor:pointer;outline:none}
+.tile:focus-visible{box-shadow:0 0 0 3px var(--accent)}
+.tile svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile .cap{display:none}
+.tile .swap{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font:700 12px/20px var(--sans);text-align:center;opacity:0;transition:opacity .15s}
+.tile:hover .swap,.tile:focus-visible .swap{opacity:1}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:var(--ink-3)}
+.loc{color:var(--link)}
+.likes{margin-top:10px;background:var(--chip);border-radius:6px;padding:8px 10px;font-size:13px;color:var(--link);line-height:1.7}
+.likes b{color:var(--ink-2);font-weight:500}
+
+/* ---------- side panel ---------- */
+h1{font:900 clamp(28px,4vw,40px)/1.15 var(--serif);margin:0 0 6px;letter-spacing:.02em;text-wrap:balance}
+.sub{color:var(--ink-2);margin:0 0 26px;font-size:15px}
+.route{display:flex;flex-wrap:wrap;gap:6px 0;align-items:center;font:500 13px var(--mono);color:var(--ink-2);margin-bottom:28px}
+.route span{padding:3px 8px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
+.route i{font-style:normal;color:var(--ink-3);padding:0 4px}
+section{margin-bottom:30px}
+h2{font:700 13px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper)}
+.seg button{border:0;background:transparent;color:var(--ink-2);padding:8px 14px;font:500 14px var(--sans);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.hint{font-size:13px;color:var(--ink-3);margin:10px 0 0}
+.copies{display:grid;gap:10px}
+.copycard{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;position:relative}
+.copycard[aria-current="true"]{border-color:var(--ink)}
+.copycard .tag{font:500 11px var(--mono);letter-spacing:.1em;color:var(--accent);margin-bottom:6px}
+.copycard pre{margin:0;font:400 14px/1.75 var(--sans);white-space:pre-wrap;color:var(--ink)}
+.copycard .acts{display:flex;gap:8px;margin-top:10px}
+.copycard button{border:1px solid var(--line);background:transparent;color:var(--ink-2);border-radius:8px;padding:5px 10px;font:500 12px var(--sans);cursor:pointer}
+.copycard button:hover{border-color:var(--ink)}
+.stops{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.stop{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stop b{font:700 16px var(--serif);display:block}
+.stop small{display:block;color:var(--ink-3);font:400 11px var(--mono);letter-spacing:.06em;margin-bottom:6px}
+.stop p{margin:0;font-size:13px;color:var(--ink-2)}
+.note{font-size:13px;color:var(--ink-2);border-left:3px solid var(--accent);padding:2px 0 2px 12px}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.86);display:grid;place-items:center;z-index:9;padding:20px}
+.lb[hidden]{display:none}
+.lb .big{width:min(90vw,90vh,720px);aspect-ratio:1/1;position:relative;overflow:hidden;border-radius:6px}
+.lb .big svg,.lb .big img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lb p{color:#ddd;font-size:13px;margin:14px 0 0;text-align:center}
+.lb .lbcap{color:#fff;font:500 13px var(--mono);letter-spacing:.12em;margin-top:14px;text-align:center}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div>
+    <div class="phone" id="phone">
+      <div class="post">
+        <div class="avatar">EP</div>
+        <div>
+          <div class="name">我</div>
+          <div class="copy" id="postCopy"></div>
+          <div class="grid" id="grid" data-cols="3"></div>
+          <div class="meta"><span class="loc">📍 恩平 · 广东</span><span>刚刚</span></div>
+          <div class="likes">♡ 泉州簪花阿姨、义乌老板娘、厦门的猫、澄海的鹅<br><b>阿妹：</b>第七张是不是绕回来了哈哈</div>
+        </div>
+      </div>
+    </div>
+    <p class="hint">点任意一格放大看；点右上角 ⇄ 可换成自己的照片。放大后长按 / 截图即可保存。</p>
+  </div>
+
+  <div>
+    <h1>从恩平出发，绕闽粤浙一圈</h1>
+    <p class="sub">一次进出都在恩平的环线：北上义乌进货，沿海南下福州、泉州、厦门，再穿潮汕回家。</p>
+    <div class="route">
+      <span>恩平</span><i>→</i><span>义乌</span><i>→</i><span>福州</span><i>→</i><span>泉州</span><i>→</i><span>厦门</span><i>→</i><span>澄海</span><i>→</i><span>恩平</span>
+    </div>
+
+    <section>
+      <h2>图片数量</h2>
+      <div class="seg" id="layoutSeg" role="group" aria-label="图片数量">
+        <button aria-pressed="true" data-n="9">九宫格</button>
+        <button aria-pressed="false" data-n="6">六图</button>
+        <button aria-pressed="false" data-n="4">四图</button>
+        <button aria-pressed="false" data-n="3">三图</button>
+        <button aria-pressed="false" data-n="1">单图</button>
+      </div>
+      <p class="hint">照片多就减格：六图去掉封面和数据页；四图只留最出片的四城；三图留福建三城；单图只留路线封面。</p>
+    </section>
+
+    <section>
+      <h2>文案 · 三选一</h2>
+      <div class="copies" id="copies"></div>
+    </section>
+
+    <section>
+      <h2>每一站，拍什么</h2>
+      <div class="stops">
+        <div class="stop"><small>01 · 22.18°N 112.31°E</small><b>恩平</b><p>温泉之乡。出发前泡一次，回来再泡一次。</p></div>
+        <div class="stop"><small>02 · 29.31°N 120.07°E</small><b>义乌</b><p>国际商贸城，7.5 万个铺位，只逛完了一排。</p></div>
+        <div class="stop"><small>03 · 26.07°N 119.30°E</small><b>福州</b><p>三坊七巷的白墙黑瓦，榕树下吃鱼丸。</p></div>
+        <div class="stop"><small>04 · 24.87°N 118.68°E</small><b>泉州</b><p>开元寺东西塔，蟳埔村簪花围。半城烟火半城仙。</p></div>
+        <div class="stop"><small>05 · 24.48°N 118.09°E</small><b>厦门</b><p>鼓浪屿渡轮、沙坡尾落日、一碗沙茶面。</p></div>
+        <div class="stop"><small>06 · 23.47°N 116.76°E</small><b>澄海</b><p>汕头玩具之都，狮头鹅卤鹅，莱芜海边看船。</p></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="note">里程按主要公路粗算，全程约 2,600 公里。真实数字以你的行车记录为准，改文案里的数字就行。</p>
+    </section>
+  </div>
+</div>
+
+<div class="lb" id="lb" hidden>
+  <div>
+    <div class="big" id="lbBig"></div>
+    <div class="lbcap" id="lbCap"></div>
+    <p>点空白处关闭</p>
+  </div>
+</div>
+
+<script>
+/* ---------- poster tiles (SVG) ---------- */
+const F = {serif:'"Noto Serif SC","Songti SC",serif', brush:'"Ma Shan Zheng","Noto Serif SC","KaiTi",serif', mono:'"IBM Plex Mono",Menlo,monospace', sans:'"Noto Sans SC","PingFang SC",sans-serif'};
+const grain = `<filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .08 0"/></filter>`;
+const svg = (inner, bg) => `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img"><defs>${grain}</defs><rect width="400" height="400" fill="${bg}"/>${inner}<rect width="400" height="400" filter="url(#g)"/></svg>`;
+const cityName = (zh, py, color, sub) => `
+  <text x="28" y="330" font-family='${F.serif}' font-weight="900" font-size="88" fill="${color}" letter-spacing="4">${zh}</text>
+  <text x="30" y="360" font-family='${F.mono}' font-size="14" fill="${color}" opacity=".8" letter-spacing="3">${py}</text>
+  ${sub?`<text x="372" y="360" text-anchor="end" font-family='${F.mono}' font-size="12" fill="${color}" opacity=".7" letter-spacing="2">${sub}</text>`:''}`;
+const stamp = (t, x, y, c='#c8412b') => `<g transform="translate(${x} ${y}) rotate(-8)"><rect width="66" height="66" rx="4" fill="none" stroke="${c}" stroke-width="3"/><text x="33" y="46" text-anchor="middle" font-family='${F.brush}' font-size="34" fill="${c}">${t}</text></g>`;
+
+const TILES = {
+  cover: {title:'路线封面', cap:'ENPING LOOP · 2026', svg: svg(`
+    <text x="28" y="64" font-family='${F.mono}' font-size="13" fill="#e9e4d8" opacity=".7" letter-spacing="4">ROUND TRIP · SIX STOPS</text>
+    <text x="28" y="120" font-family='${F.serif}' font-weight="900" font-size="46" fill="#f4efe4">恩平出发</text>
+    <text x="28" y="168" font-family='${F.serif}' font-weight="900" font-size="46" fill="#f4efe4">恩平回来</text>
+    <polyline points="60,330 120,240 200,220 260,260 300,290 340,320 60,330" fill="none" stroke="#e0a458" stroke-width="3" stroke-dasharray="6 6"/>
+    <g fill="#f4efe4">${[[60,330],[120,240],[200,220],[260,260],[300,290],[340,320]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="6"/>`).join('')}</g>
+    <circle cx="60" cy="330" r="12" fill="none" stroke="#e0a458" stroke-width="2"/>
+    <g font-family='${F.sans}' font-size="12" fill="#e9e4d8">
+      <text x="74" y="346">恩平</text><text x="126" y="234">义乌</text><text x="206" y="212">福州</text><text x="266" y="252">泉州</text><text x="306" y="282">厦门</text><text x="346" y="312">澄海</text>
+    </g>
+    <text x="372" y="372" text-anchor="end" font-family='${F.mono}' font-size="16" fill="#e0a458" letter-spacing="2">≈2600 km</text>`, '#1d2c4c')},
+  enping: {title:'恩平', cap:'ENPING · 温泉之乡', svg: svg(`
+    <path d="M0 250 Q80 170 160 240 T320 220 T400 250 V400 H0Z" fill="#2f6b5a"/>
+    <path d="M0 290 Q100 230 200 290 T400 280 V400 H0Z" fill="#1f4f43"/>
+    <ellipse cx="200" cy="330" rx="150" ry="26" fill="#9ed2c3" opacity=".9"/>
+    <g stroke="#e8f3ef" stroke-width="4" fill="none" stroke-linecap="round" opacity=".8">
+      <path d="M150 300 c-10 -20 10 -30 0 -50"/><path d="M200 295 c-10 -20 10 -30 0 -50"/><path d="M250 300 c-10 -20 10 -30 0 -50"/>
+    </g>
+    <circle cx="320" cy="90" r="34" fill="#f2c56b"/>
+    ${cityName('恩平','ENPING','#f4efe4','START · 22.18°N')}
+    ${stamp('出发',300,150,'#f2c56b')}`, '#3b7d6a')},
+  yiwu: {title:'义乌', cap:'YIWU · 国际商贸城', svg: svg(`
+    <g fill="#1c1a17">${Array.from({length:8},(_,r)=>Array.from({length:10},(_,c)=>`<rect x="${20+c*36}" y="${40+r*26}" width="30" height="20" rx="2" opacity="${((r*7+c*3)%5)/6+.25}"/>`).join('')).join('')}</g>
+    <rect x="20" y="40" width="360" height="208" fill="none" stroke="#1c1a17" stroke-width="3"/>
+    <text x="372" y="72" text-anchor="end" font-family='${F.mono}' font-size="12" fill="#1c1a17" letter-spacing="2">75,000 STALLS</text>
+    ${cityName('义乌','YIWU','#1c1a17','NO.2 · 进货')}
+    ${stamp('买单',300,140,'#1c1a17')}`, '#f5c518')},
+  fuzhou: {title:'福州', cap:'FUZHOU · 三坊七巷', svg: svg(`
+    <path d="M0 240 L60 200 L120 240 L180 195 L240 240 L300 205 L360 240 L400 220 V300 H0Z" fill="#2b2a28"/>
+    <rect x="0" y="240" width="400" height="60" fill="#eae4d6"/>
+    <g fill="#2b2a28"><rect x="70" y="260" width="22" height="40"/><rect x="190" y="260" width="22" height="40"/><rect x="310" y="260" width="22" height="40"/></g>
+    <circle cx="90" cy="120" r="70" fill="#4d7a4a"/><circle cx="150" cy="100" r="55" fill="#5f8f56"/><rect x="112" y="150" width="14" height="90" fill="#3e3128"/>
+    <g stroke="#3e3128" stroke-width="3" opacity=".7"><line x1="100" y1="170" x2="98" y2="240"/><line x1="135" y1="165" x2="140" y2="240"/></g>
+    ${cityName('福州','FUZHOU','#f4efe4','榕城 · 26.07°N')}`, '#35594f')},
+  quanzhou: {title:'泉州', cap:'QUANZHOU · 半城烟火半城仙', svg: svg(`
+    <g fill="#8a1f2b">${[[200,60],[200,110],[200,160],[200,210]].map(([x,y],i)=>`<path d="M${x-50-i*10} ${y+40} L${x} ${y} L${x+50+i*10} ${y+40} Z"/><rect x="${x-30-i*8}" y="${y+40}" width="${60+i*16}" height="14"/>`).join('')}</g>
+    <rect x="182" y="264" width="36" height="40" fill="#8a1f2b"/>
+    <g>${Array.from({length:14},(_,i)=>{const a=i/14*Math.PI*2,x=320+Math.cos(a)*48,y=110+Math.sin(a)*48;return `<circle cx="${x}" cy="${y}" r="11" fill="${['#f7b6c2','#f28ea1','#fbe3a1','#ffffff'][i%4]}"/>`}).join('')}<circle cx="320" cy="110" r="22" fill="#f5d0a9"/></g>
+    ${cityName('泉州','QUANZHOU','#8a1f2b','世遗 · 簪花围')}
+    ${stamp('刺桐',40,60,'#8a1f2b')}`, '#f6e6d8')},
+  xiamen: {title:'厦门', cap:'XIAMEN · 鼓浪屿渡轮', svg: svg(`
+    <circle cx="300" cy="120" r="46" fill="#ffd166"/>
+    <rect x="0" y="230" width="400" height="170" fill="#0f5c8c"/>
+    <g fill="#ffffff" opacity=".5"><rect x="30" y="250" width="60" height="3"/><rect x="150" y="270" width="90" height="3"/><rect x="290" y="255" width="70" height="3"/><rect x="80" y="300" width="80" height="3"/></g>
+    <path d="M70 240 L330 240 L310 275 L90 275Z" fill="#ffffff"/><rect x="130" y="205" width="140" height="35" fill="#e2e8ee"/><rect x="180" y="180" width="26" height="25" fill="#c8412b"/>
+    <path d="M40 232 Q60 170 120 220 Q140 150 200 225 Q230 190 270 222 Q300 200 360 232Z" fill="#1c8a7a" opacity=".85"/>
+    ${cityName('厦门','XIAMEN','#f4efe4','沙茶面 · 沙坡尾')}`, '#6fb7d6')},
+  chenghai: {title:'澄海', cap:'CHENGHAI · 玩具之都 · 卤鹅', svg: svg(`
+    <g fill="#f4efe4">
+      <ellipse cx="200" cy="250" rx="90" ry="55"/><path d="M270 250 Q300 160 260 110 Q250 80 280 80 Q300 80 296 110 Q300 160 300 250Z"/><circle cx="286" cy="88" r="22"/>
+    </g>
+    <path d="M296 84 L330 92 L298 100Z" fill="#f2c56b"/><circle cx="292" cy="84" r="3" fill="#1c1a17"/><path d="M270 72 Q286 58 300 74Z" fill="#c8412b"/>
+    <g>${[['#f5c518',40,300],['#1c8a7a',80,300],['#c8412b',60,270],['#6fb7d6',100,270]].map(([c,x,y])=>`<rect x="${x}" y="${y}" width="36" height="28" rx="3" fill="${c}"/>`).join('')}</g>
+    ${cityName('澄海','CHENGHAI','#f4efe4','潮汕 · 23.47°N')}
+    ${stamp('食鹅',320,150,'#f2c56b')}`, '#7a1e1e')},
+  stats: {title:'旅程数据', cap:'BY THE NUMBERS', svg: svg(`
+    <g font-family='${F.mono}' fill="#1c1a17">
+      <text x="30" y="70" font-size="13" letter-spacing="4" opacity=".6">TRIP LOG</text>
+      <text x="30" y="150" font-size="72" font-weight="500">2600</text><text x="30" y="178" font-size="13" letter-spacing="3" opacity=".7">KM · 公路粗算</text>
+      <text x="30" y="250" font-size="48" font-weight="500">6</text><text x="80" y="250" font-size="13" letter-spacing="3" opacity=".7">CITIES · 六座城</text>
+      <text x="30" y="310" font-size="48" font-weight="500">3</text><text x="80" y="310" font-size="13" letter-spacing="3" opacity=".7">PROVINCES · 粤 浙 闽</text>
+      <text x="30" y="370" font-size="48" font-weight="500">1</text><text x="80" y="370" font-size="13" letter-spacing="3" opacity=".7">LOOP · 回到原点</text>
+    </g>
+    <line x1="30" y1="200" x2="370" y2="200" stroke="#1c1a17" stroke-width="1.5" opacity=".4"/>`, '#e9e4d8')},
+  home: {title:'回到恩平', cap:'BACK TO ENPING', svg: svg(`
+    <circle cx="200" cy="170" r="110" fill="none" stroke="#e0a458" stroke-width="3" stroke-dasharray="8 8"/>
+    <circle cx="200" cy="60" r="10" fill="#e0a458"/>
+    <path d="M200 60 L212 44 L188 44Z" fill="#e0a458" transform="rotate(90 200 60)"/>
+    <text x="200" y="160" text-anchor="middle" font-family='${F.brush}' font-size="60" fill="#f4efe4">回家</text>
+    <text x="200" y="205" text-anchor="middle" font-family='${F.mono}' font-size="13" fill="#e9e4d8" opacity=".7" letter-spacing="4">TERMINUS = ORIGIN</text>
+    ${cityName('恩平','ENPING','#f4efe4','END · 再泡一次温泉')}`, '#1d2c4c')},
+};
+
+const LAYOUTS = {
+  9:['cover','enping','yiwu','fuzhou','quanzhou','xiamen','chenghai','stats','home'],
+  6:['enping','yiwu','fuzhou','quanzhou','xiamen','chenghai'],
+  4:['fuzhou','quanzhou','xiamen','chenghai'],
+  3:['fuzhou','quanzhou','xiamen'],
+  1:['cover'],
+};
+const COPIES = [
+  {tag:'A · 短句版（最像朋友圈）', text:'恩平出发，恩平回来。\n义乌进货，福州吃鱼丸，泉州簪花，厦门看海，澄海食鹅。\n2600 公里，绕了一圈，发现最舒服的还是家门口那池温泉。'},
+  {tag:'B · 站点版', text:'📍恩平 → 义乌 → 福州 → 泉州 → 厦门 → 澄海 → 恩平\n\n在义乌学会了讲价，在泉州学会了慢，在厦门学会了等日落。\n回到恩平的那一刻才明白，起点和终点是同一个地方，才叫圆满。'},
+  {tag:'C · 一句话版', text:'粤 → 浙 → 闽 → 粤，六座城，一整圈。\n人回来了，胃还留在潮汕。'},
+];
+
+const userImgs = {};           // key -> dataURL
+let n = 9, copyIdx = 0;
+const grid = document.getElementById('grid');
+const lb = document.getElementById('lb'), lbBig = document.getElementById('lbBig');
+
+function render(){
+  grid.dataset.cols = n===1?'1':(n===4?'2':'3');
+  grid.innerHTML = '';
+  LAYOUTS[n].forEach(key=>{
+    const t = TILES[key];
+    const el = document.createElement('div');
+    el.className='tile'; el.tabIndex=0; el.setAttribute('role','button'); el.setAttribute('aria-label',t.title+'，点击放大');
+    el.innerHTML = (userImgs[key]?`<img src="${userImgs[key]}" alt="${t.title}">`:t.svg) + `<div class="cap">${t.cap}</div><span class="swap" title="换成自己的照片">⇄</span>`;
+    el.addEventListener('click',e=>{
+      if(e.target.classList.contains('swap')){ pick(key); return; }
+      lbBig.innerHTML = userImgs[key]?`<img src="${userImgs[key]}" alt="${t.title}">`:t.svg; document.getElementById('lbCap').textContent=t.cap; lb.hidden=false;
+    });
+    el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+    grid.appendChild(el);
+  });
+  document.getElementById('postCopy').textContent = COPIES[copyIdx].text;
+}
+function pick(key){
+  const inp = document.createElement('input'); inp.type='file'; inp.accept='image/*';
+  inp.onchange = ()=>{ const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ userImgs[key]=r.result; render(); }; r.readAsDataURL(f); };
+  inp.click();
+}
+lb.addEventListener('click',()=>{ lb.hidden=true; });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') lb.hidden=true; });
+
+document.getElementById('layoutSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  n=+b.dataset.n;
+  [...e.currentTarget.children].forEach(x=>x.setAttribute('aria-pressed',x===b));
+  render();
+});
+
+const copiesEl = document.getElementById('copies');
+COPIES.forEach((c,i)=>{
+  const d=document.createElement('div'); d.className='copycard'; d.setAttribute('aria-current',i===copyIdx);
+  d.innerHTML=`<div class="tag">${c.tag}</div><pre>${c.text}</pre><div class="acts"><button data-use>用这条</button><button data-copy>复制文案</button></div>`;
+  d.querySelector('[data-use]').onclick=()=>{ copyIdx=i; [...copiesEl.children].forEach((x,j)=>x.setAttribute('aria-current',j===i)); render(); };
+  d.querySelector('[data-copy]').onclick=async ev=>{ try{ await navigator.clipboard.writeText(c.text); ev.target.textContent='已复制'; setTimeout(()=>ev.target.textContent='复制文案',1200);}catch(_){ ev.target.textContent='请手动选中复制'; } };
+  copiesEl.appendChild(d);
+});
+render();
+</script>
